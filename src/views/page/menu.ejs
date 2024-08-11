@@ -1,0 +1,13 @@
+<nav class="nav">
+  <ul class="nav__list">
+    <li class="nav__item">
+      <a class="nav__link <% if (title === 'Главная') { %>nav__link-selected<% } %> " href="/api/books/" title="Главная">Главная</a>
+    </li>
+    <li class="nav__item">
+      <a class="nav__link <% if (title === 'Библиотека') { %>nav__link-selected<% } %>" href="/api/advertisements/" title="Библиотека">Просмотр</a>
+    </li>
+    <li class="nav__item">
+      <a class="nav__link <% if (title === 'Контакты') { %>nav__link-selected<% } %>" href="/api/books/contacts" title="Контакты">Контакты</a>
+    </li>
+  </ul>
+</nav>
