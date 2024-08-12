@@ -2,8 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema({
   contactPhone: {
-    type: String,
-    required: true
+    type: String
   },
   passwordHash: {
     type: String,

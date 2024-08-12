@@ -1,0 +1,15 @@
+<%- include('../page/page_header.ejs', {title: title}) %>
+
+<div class="pageCont">
+  <main class="main">
+    <h1><%= title %></h1>
+    <form class="userAuthForm" method="POST">
+      <input class="input emailInp" type="email" name="email" placeholder="Укажите e-mail" autofocus required>
+      <input class="input pass" type="password" name="password" placeholder="Укажите пароль" required>
+      <button class="btn submitBtn" type="submit">Дальше</button>
+    </form>
+    <h4>Если вы ещё не зарегистрированы, то <a href="/api/signup" title="Зарегистрироваться">зарегистрируйтесь</a></h4>
+  </main>
+</div>
+
+<%- include('../page/page_footer.ejs') %>
