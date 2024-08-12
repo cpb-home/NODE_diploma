@@ -25,12 +25,15 @@ passport.deserializeUser( (id, cb) => {
 
 
 passport.use('signup', new LocalStrategy({
+  usernameField: "email",
+  passwordField: "password",
   passReqToCallback : true
   },
   function(req, username, password, done) {console.log(1);
     const newUser = new User();
-    newUser.email = req.username;
+    newUser.email = username;
     newUser.password = password;
+    newUser.name = req.body.name;
     console.log(newUser);
     //User.create({ email: req.email }.then(res => console.log(res)));
       /*, function (err, user) {
