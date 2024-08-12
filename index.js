@@ -6,9 +6,9 @@ const session = require('express-session');
 const socketIO = require('socket.io');
 const passport = require('./src/middleware/auth');
 
-const HTTP_HOST = process.env.HTTP_HOST || '127.0.0.1';
-const HTTP_PORT = process.env.PORT || 3000;
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://root:example@mongo:27017/';
+//const HTTP_HOST = /*process.env.HTTP_HOST || */'localhost';
+const HTTP_PORT = /*process.env.HTTP_PORT || */3000;
+const MONGO_URL = /*process.env.MONGO_URL || */'mongodb://root:example@mongo:27017/';
 
 const error404 = require('./src/middleware/404');
 const advRouter = require('./src/routes/api/adv');
@@ -31,12 +31,12 @@ app.use('/api/advertisements', advRouter);
 app.use(error404);
 
 
-
+/*
 async function start(HTTP_PORT, HTTP_HOST, MONGO_URL) {
   try {
     await mongoose.connect(MONGO_URL);
     server.listen(HTTP_PORT, HTTP_HOST, () => {
-      console.log(`Delivery app ran at ${HTTP_PORT}:${HTTP_PORT}`);
+      console.log(`Delivery app ran at ${HTTP_PORT}`);
     })
   } catch (e) {
     console.log(e);
@@ -44,8 +44,8 @@ async function start(HTTP_PORT, HTTP_HOST, MONGO_URL) {
 }
 
 start(HTTP_PORT, HTTP_HOST, MONGO_URL);
+*/
 
-/*
-app.listen(HTTP_PORT, HTTP_HOST, () => {
-  console.log(`Delivery app ran at ${HTTP_PORT}:${HTTP_PORT}`);
-})*/
+app.listen(HTTP_PORT, () => {
+  console.log(`Delivery app ran at :${HTTP_PORT}`);
+})

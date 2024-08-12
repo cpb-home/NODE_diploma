@@ -1,13 +1,9 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
 
 const messageSchema = new Schema({
-  _id: {
-    type: ObjectId,
-    unique: true,
-    required: true
-  },
   author: {
-    type: ObjectId,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   sentAt: {

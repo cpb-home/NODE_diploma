@@ -1,11 +1,6 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
 
 const advSchema = new Schema({
-  _id: {
-    type: ObjectId,
-    unique: true,
-    required: true
-  },
   shortText: {
     type: String,
     required: true
@@ -19,7 +14,8 @@ const advSchema = new Schema({
     required: false
   },
   userId: {
-    type: ObjectId,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   createdAt: {

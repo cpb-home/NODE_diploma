@@ -27,7 +27,6 @@ services:
       - ./:/app
     environment:
       - HTTP_PORT=3000
-      - HTTP_HOST=127.0.0.1
       - MONGO_URL=http://localhost:8081/
       - MONGO_INITDB_DATABASE=test
     ports:
