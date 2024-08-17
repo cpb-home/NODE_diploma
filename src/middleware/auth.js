@@ -1,9 +1,28 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
+var MD5 = require("crypto-js/md5");
 
 const verify = (username, password, done) => {
-  User.findOne({ email : username, passwordHash: password}).then(user => done(null, user)).catch(e => done(e));
+  User.findOne({ email : username, passwordHash: MD5(password).toString()})
+  .then(user => {
+    if (!user) {
+      throw new Error('Неверный логин или пароль');
+    } else {
+      const newObj = {
+        data: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+          contactPhone: user.contactPhone
+        },
+        status: 'ok'
+      };
+      return newObj;
+    }
+  })
+  .then(reply => done(null, reply))
+  .catch(e => done({error: 'Неверный логин или пароль', status: 'error'}));
 }
 
 const options = {
@@ -14,7 +33,7 @@ const options = {
 passport.use('local', new LocalStrategy(options, verify))
 
 passport.serializeUser((user, cb) => {
-  cb(null, user._id)
+  cb(null, user.data.id)
 })
 
 passport.deserializeUser( (id, cb) => {
@@ -29,20 +48,34 @@ passport.use('signup', new LocalStrategy({
   passwordField: "password",
   passReqToCallback : true
   },
-  function(req, username, password, done) {console.log(1);
+  function(req, username, password, done) {
     const newUser = new User();
     newUser.email = username;
-    newUser.password = password;
+    newUser.passwordHash = MD5(password).toString();
     newUser.name = req.body.name;
-    console.log(newUser);
-    //User.create({ email: req.email }.then(res => console.log(res)));
-      /*, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
-      console.log('create');
-      return done(null, user);
-    });*/
-    return done(null, newUser);
+    newUser.contactPhone = req.body.contactPhone;
+    
+    User.create(newUser)
+      .then(user => {
+        const newObj = {
+          data: {
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            contactPhone: user.contactPhone
+          },
+          status: 'ok'
+        };
+        return newObj;
+      })
+      .then(reply => done(null, reply))
+      .catch(e => {
+        if (e.errorResponse.code === 11000) {
+          done({error: 'email занят', status: 'error'});
+        } else {
+          done({error: `Ошибка ${e.errorResponse.code}`, status: 'error'});
+        }
+      });
   }
 ));
 

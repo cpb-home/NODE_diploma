@@ -1,8 +1,11 @@
-<%- include('../page/page_header.ejs', {title: title}) %>
+<%- include('../page/page_header.ejs', {title: title, error: error}) %>
 
 <div class="pageCont">
   <main class="main">
     <h1><%= title %></h1>
+    <% if (error !== '') { %>
+      <h4 class="errorMessage">Не удалось зарегистрироваться: <%= error %></h4>
+    <% } %>
     <form class="userAuthForm" method="POST">
     </tbody>
       <input class="input emailInp" type="email" name="email" placeholder="Укажите e-mail" autofocus required>

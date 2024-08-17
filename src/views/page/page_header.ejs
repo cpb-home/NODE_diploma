@@ -11,5 +11,8 @@
   <header class="header">
     <div class="headerCont">
       <%- include('menu.ejs', {title: title}) %>
+      <% if (locals?.user) { %>
+        <a class="userName" href="/api/account" title="Кабинет пользователя"><%= user.name %></a> 
+      <% } %>
     </div>
   </header>

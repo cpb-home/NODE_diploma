@@ -1,53 +1,88 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../../middleware/auth');
-const User = require('../../models/User');
-//const LocalStrategy = require('passport-local').Strategy;
 
 router.get('/signin', (req, res) => {
   res.render('users/login', {
-    title: 'Аутентификация'
+    title: 'Аутентификация',
+    error: ''
   })
 })
 
-router.post('/signin',
-  passport.authenticate('local', { failureRedirect: '/api/signin' }),
-  (req, res) => {
-    res.redirect('/api/account');
-  }
-)
+router.post('/signin', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      res.render('users/login', {
+        title: 'Аутентификация',
+        error: err.error
+      })
+      return next(err);
+    }
+    
+    if (! user) {
+      console.log({ success : false, message : 'authentication failed' })
+      return res.send({ success : false, message : 'authentication failed' });
+    }
+    
+    req.login(user, loginErr => {
+      if (loginErr) {
+        return next(loginErr);
+      }
+      res.redirect('/api/account');
+    });
+  })(req, res, next);
+});
 
 router.get('/signup', (req, res) => {
   res.render('users/register', {
-    title: 'Регистрация'
+    title: 'Регистрация',
+    error: ''
   })
 })
 
-router.post('/signup', 
-  passport.authenticate('signup', { successRedirect: '/api/signup', failureRedirect: '/api/signin' }),
+router.post('/signup', (req, res, next) => {
+  passport.authenticate('signup', (err, user, info) => {
+    if (err) {
+      res.render('users/register', {
+        title: 'Регистрация',
+        error: err.error
+      })
+      return next(err);
+    }
+    
+    if (! user) {
+      console.log({ success : false, message : 'authentication failed' })
+      return res.send({ success : false, message : 'authentication failed' });
+    }
+    
+    req.login(user, loginErr => {
+      if (loginErr) {
+        return next(loginErr);
+      }
+      res.redirect('/api/account');
+    });
+  })(req, res, next);
+});
+
+router.get('/account', (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/api/signin')
+  }
+  next()
+  },
   (req, res) => {
-  const { email, password, name, contactPhone } = req.body; console.log(req.body)}
-  /*User.create({email, passwordHash: password, name, contactPhone})
-    .then(reply => console.log(reply))
-    .catch(e => console.log(`Ошибка обмена данными 1: ${e}`));*/
-    //.then(res.redirect('/signin'))
-  // res.render('users/register', {
-  //   title: 'Регистрация'
-  // })
+    res.render('users/account', {
+      title: 'Личный кабинет',
+      user: req.user
+    })
+  }
 )
-
-
-router.get('/account', (req, res) => {
-  res.render('users/account', {
-    title: 'Аккаунт пользователя'
-  })
-})
 
 router.get('/logout',  (req, res) => {
   req.logout(null, () => {
     
   });
-  res.redirect('/signin');
+  res.redirect('/api/signin');
 })
 
 module.exports = router;

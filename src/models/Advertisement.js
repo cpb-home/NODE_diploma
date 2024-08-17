@@ -31,7 +31,7 @@ const advSchema = new Schema({
     required: true
   },
   isDeleted: {
-    type: boolean,
+    type: Boolean,
     required: true
   }
 })

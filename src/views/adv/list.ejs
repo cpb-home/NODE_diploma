@@ -1,9 +1,18 @@
-<%- include('../page/page_header.ejs', {title: title}) %>
+<%- include('../page/page_header.ejs', {title: title, allAdvs: allAdvs}) %>
 
 <div class="pageCont">
   <main class="main">
     <h1><%= title %></h1>
-    <%- include('./item.ejs') %>
+    <% if (allAdvs.length > 0) { 
+      for (let i = 0; i < allAdvs.length; i++) {
+        include('./item.ejs', {adv: allAdvs[i]});
+      }
+    } else {
+    %>
+      <h4>Пока нет ни одного объявления</h4>
+    <%
+    }
+    %>
   </main>
 </div>
 

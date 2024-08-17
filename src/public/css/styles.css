@@ -34,7 +34,9 @@ h4 {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px 0;}
-
+.errorMessage {
+    color: red;
+}
 
 /* HEADER */
 .header {
@@ -68,6 +70,11 @@ h4 {
     }}
 .nav__link-selected {
     text-decoration: underline;}
+.userName {
+    margin-left: auto;
+    color: var(--color-blueLight);
+    text-decoration: none;
+}
 
 /* BODY */
 .pageCont {

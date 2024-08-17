@@ -5,7 +5,13 @@
     <p class="item__desc">description description description description</p>
     <div class="item__date">Создано: createdAt</div>
     <div class="item__author">Автор: user.name</div>
-    <div class="item__editCont"><a href="/api/advertisements/ID" title="Редактировать объявление">Редактировать объявление</a> <a href="/api/advertisements/ID" title="Удалить объявление">Удалить объявление</a></div>
+    <% if (locals.user) { %>
+    <div class="item__editCont">
+      <a href="/api/advertisements/ID" title="Редактировать объявление">Редактировать объявление</a> 
+      <a href="/api/advertisements/ID" title="Удалить объявление">Удалить объявление</a>
+      <a href="/api/advertisements/ID" title="Удалить объявление">Добавить объявление</a>
+    </div>
+    <% } %>
   </div>
 </div>
 
