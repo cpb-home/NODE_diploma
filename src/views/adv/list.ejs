@@ -1,18 +1,33 @@
-<%- include('../page/page_header.ejs', {title: title, allAdvs: allAdvs}) %>
+<%- include('../page/page_header.ejs', {title: title, allAdvs: allAdvs, sessMsg: sessMsg, users: users}) %>
 
 <div class="pageCont">
   <main class="main">
     <h1><%= title %></h1>
+    <% if (sessMsg !== '') { 
+      if (sessMsg.status === 'ok') {
+    %>
+      <h4 class="successMessage"><%= sessMsg.message %></h4>  
+    <%
+      } else {
+    %>
+      <h4 class="errorMessage"><%= sessMsg.message %></h4>
+    <% } } %>
+
+    <% if (locals.user) { %>
+      <div class="addBtnCont">
+        <a class="btnLink" href="/api/advertisements/add" title="Удалить объявление">Добавить объявление</a>
+      </div>
+    <% } %>
+
     <% if (allAdvs.length > 0) { 
       for (let i = 0; i < allAdvs.length; i++) {
-        include('./item.ejs', {adv: allAdvs[i]});
-      }
+    %>
+        <%-  include('./item.ejs', {adv: allAdvs[i]});%>
+    <%  }
     } else {
     %>
       <h4>Пока нет ни одного объявления</h4>
-    <%
-    }
-    %>
+    <% } %>
   </main>
 </div>
 

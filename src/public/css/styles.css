@@ -4,6 +4,7 @@
     box-sizing: border-box;}
 :root {
     --color-blueLight: lightblue;
+    --color-blueLightBGC: rgb(112, 200, 230);
     --color-blueMiddle: rgb(6, 6, 248);
     --color-blueDark: rgb(1, 40, 146);
     --color-magentaDark: darkmagenta;
@@ -30,12 +31,20 @@ h4 {
     margin-bottom: 10px;}
 .bold {
     font-weight: 700;}
+.center {
+    text-align: center;}
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px 0;}
 .errorMessage {
-    color: red;
+    color: red;}
+.successMessage {
+    color: green;}
+.padding10 {
+    padding: 10px;}
+.margin10 {
+    margin: 10px;
 }
 
 /* HEADER */
@@ -43,6 +52,7 @@ h4 {
     background-color: var(--color-blueDark);
     border-bottom: 3px solid var(--color-magentaDark);}
 .headerCont {
+    position: relative;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px 10px;
@@ -71,7 +81,11 @@ h4 {
 .nav__link-selected {
     text-decoration: underline;}
 .userName {
-    margin-left: auto;
+    position: absolute;
+    font-size: 16px;
+    line-height: 16px;
+    right: 0;
+    top: calc(50% - 8px);
     color: var(--color-blueLight);
     text-decoration: none;
 }
@@ -155,27 +169,63 @@ h4 {
         color: var(--color-blueLight);
     }}
 
+.mainCont {
+    margin: 0 auto;
+    text-align: center;
+}
 
-
-
-
-
+.table {
+    margin: 0 auto;
+    width: 80%;
+}
 
 .table__row {
+    font-size: 18px;
     display: grid;
-    grid-template-columns: 50px 1fr 1fr 100px;
-    border-top: 1px solid var(--color-bg-darkgreen);
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--color-blueDark);
     padding: 10px 10px;
     align-items: center;
 }
 
 .table__row:last-child {
-    border-bottom: 1px solid var(--color-bg-darkgreen);
+    border-bottom: 1px solid var(--color-blueDark);
 }
 
-.table__row:nth-child(2n) {
-    background-color: rgb(167, 214, 167);;
+.table__row p {
+    text-align: right;
+    padding: 0 15px;
 }
+
+.table__row p:nth-child(2n) {
+    text-align: left;
+    padding: 0 15px;
+}
+
+.addBtnCont {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.btnLink {
+    display: inline-block;
+    background-color: var(--color-blueLightBGC);
+    color: var(--color-blueDark);
+    border: 1px solid var(--color-blueDark);
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--color-blueMiddle);
+        color: var(--color-blueLight);
+    }
+}
+
+
+
+
 
 .table__headerText {
     font-weight: bold;

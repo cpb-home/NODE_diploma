@@ -3,8 +3,20 @@
 <div class="pageCont">
   <main class="main">
     <h1><%= title %></h1>
-    Аккаунт
-    <div>
+    <div class="mainCont">
+      <div class="table">
+        <div class="table__row">
+          <p class="bold">Имя: </p><p><%= user.name %></p>
+        </div>
+        <div class="table__row">
+          <p class="bold">e-mail: </p><p><%= user.email %></p>
+        </div>
+        <div class="table__row">
+          <p class="bold">Номер телефона: </p><p><%= user.contactPhone %></p>
+        </div>
+      </div>
+    </div>
+    <div class="center padding10 margin10">
       <a href="/api/logout" title="Выйти из кабинета">Выйти из кабинета</a>
     </div>
   </main>

@@ -1,8 +1,20 @@
-<%- include('../page/page_header.ejs', {title: title}) %>
+<%- include('../page/page_header.ejs', {title: title, user: user}) %>
 
 <main class="main">
   <div class="container">
     <h1><%= title %></h1>
+    <% if (locals.user) { %>
+    <form class="userAuthForm" method="POST" enctype="multipart/form-data" action="/api/advertisements">
+    </tbody>
+      <input class="input" type="text" name="shortText" placeholder="Введите название" autofocus required>
+      <textarea class="input" name="description" placeholder="Введите текст объявления" required></textarea>
+      <input class="input" type="file" name="images" placeholder="Выберите картинки" multiple required>
+      <input class="input" type="text" name="tags" placeholder="Теги для поиска">
+      <button class="btn submitBtn" type="submit">Добавить</button>
+    </form>
+    <% } else { %>
+      <h4 class="errorMessage">Вы не можете создавать объявления</h4>
+    <% } %>
   </div>
 </main>
 

@@ -1,7 +1,7 @@
 <nav class="nav">
   <ul class="nav__list">
     <li class="nav__item">
-      <a class="nav__link <% if (title === 'Объявления') { %>nav__link-selected<% } %> " href="/api/advertisements" title="Главная">Объявления</a>
+      <a class="nav__link <% if (title === 'Объявления' || title === 'Добавление объявления' || title === 'Редактирование объявления') { %>nav__link-selected<% } %> " href="/api/advertisements" title="Главная">Объявления</a>
     </li>
     <li class="nav__item">
       <a class="nav__link <% if (title === 'Пользователи' || title === 'Аутентификация' || title === 'Регистрация' || title === 'Личный кабинет') { %>nav__link-selected<% } %>" href="/api/account" title="Библиотека">Пользователи</a>

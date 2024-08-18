@@ -1,17 +1,37 @@
 <div class="item__cont">
   <div class="item__info-cont">
-    <h2 class="item__header">shortText</h2>
+    <h2 class="item__header"><%= adv.shortText %></h2>
     <div class="item__images-cont">Картинко</div>
-    <p class="item__desc">description description description description</p>
-    <div class="item__date">Создано: createdAt</div>
-    <div class="item__author">Автор: user.name</div>
-    <% if (locals.user) { %>
-    <div class="item__editCont">
-      <a href="/api/advertisements/ID" title="Редактировать объявление">Редактировать объявление</a> 
-      <a href="/api/advertisements/ID" title="Удалить объявление">Удалить объявление</a>
-      <a href="/api/advertisements/ID" title="Удалить объявление">Добавить объявление</a>
+    <p class="item__desc"><%= adv.description %></p>
+    <div class="item__date">
+      Создано: 
+      <% 
+        const options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric'
+      };
+      dateCreated = (new Date(adv.createdAt)).toLocaleDateString("ru", options);
+      %> <%= dateCreated %>
     </div>
-    <% } %>
+    <div class="item__author">Автор: 
+      <% const advUser = users.find(e => String(e._id) === String(adv.userId)) %>
+      <%= advUser.name %>
+    </div>
+    <% if (locals.user) { 
+        if (String(adv.userId) === String(user._id)) {
+    %>
+          <div class="item__editCont">
+            <form method="DELETE" action="/api/advertisements/<%= adv._id %>">
+              <button class="btnLink" type="submit" onclick="confirm('Точно надо удалить это объявление?');" title="Удалить объявление">Удалить</button>
+            </form>
+          </div>
+    <%  }
+      }
+    %>
   </div>
 </div>
 
