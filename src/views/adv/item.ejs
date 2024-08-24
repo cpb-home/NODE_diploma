@@ -1,7 +1,13 @@
 <div class="item__cont">
   <div class="item__info-cont">
     <h2 class="item__header"><%= adv.shortText %></h2>
-    <div class="item__images-cont">Картинко</div>
+    <div class="item__images-cont">
+      <% for (let i = 0; i < adv.images.length; i++) {
+      %>
+      <img src="<%= adv.images[i] %>" alt="Изображение <%= i+1 %>">
+      <% }
+      %>
+    </div>
     <p class="item__desc"><%= adv.description %></p>
     <div class="item__date">
       Создано: 
@@ -21,14 +27,14 @@
       <% const advUser = users.find(e => String(e._id) === String(adv.userId)) %>
       <%= advUser.name %>
     </div>
+    <a class="item__more" href="<%= `/api/advertisements/${adv._id}` %>" title="<%= adv.shortText %>">Читать подробнее...</a>
     <% if (locals.user) { 
         if (String(adv.userId) === String(user._id)) {
     %>
           <div class="item__editCont">
-            <form method="DELETE" action="/api/advertisements/<%= adv._id %>">
-              <button class="btnLink" type="submit" onclick="confirm('Точно надо удалить это объявление?');" title="Удалить объявление">Удалить</button>
-            </form>
+            <button class="btnLink delBtn" data-id="<%= adv._id %>" type="button" title="Удалить объявление">Удалить</button>
           </div>
+          <div class="delMessageCont"></div>
     <%  }
       }
     %>

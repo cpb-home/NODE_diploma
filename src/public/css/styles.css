@@ -114,14 +114,17 @@ h4 {
     padding: 10px;
     display: flex;
     justify-content: center;
-    align-items: center;}
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;}
 .item__images-cont img {
-    max-height: 150px;}
+    height: 100px;}
 .item__desc {
     width: 500px;
     padding: 10px;
     text-align: justify;
-    text-indent: 10px;}
+    text-indent: 10px;
+    font-size: 18px;}
 .item__date {
     width: 100%;
     text-align: right;
@@ -132,8 +135,21 @@ h4 {
     text-align: right;
     font-size: 12px;
     padding: 2px;}
+.item__more {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-size: 16px;
+    padding: 2px;
+    color: var(--color-blueDark);
+
+    &:hover {
+        color: var(--color-blueMiddle);
+    }}
 .item__editCont {
     display: flex;
+    align-items: center;
     justify-content: center;
     gap: 30px;
     padding: 10px;}

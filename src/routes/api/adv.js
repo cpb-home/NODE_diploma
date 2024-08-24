@@ -4,10 +4,11 @@ const Advertisement = require('../../models/Advertisement');
 const passport = require('../../middleware/auth');
 const fileMulter = require('../../middleware/file').any('images');
 const User = require('../../models/User');
+const fs = require('fs');
 
 router.get('/', async (req, res) => {
   try {
-    const allAdvs = await Advertisement.find().select('-__v');
+    const allAdvs = await Advertisement.find({ isDeleted: { $nin: true } });
     const sessMsg = req.session.sessMsg || '';
     const users = await User.find({}, {name: 1});
     req.session.sessMsg = '';
@@ -62,9 +63,9 @@ router.post('/', (req, res) => {
 router.get('/add', (req, res, next) => {
   if (!req.isAuthenticated()) {
     req.session.sessMsg = {status: 'error', message: 'Вы не авторизованы'};
-    return res.redirect('/api/advertisements')
+    return res.redirect('/api/advertisements');
   }
-  next()
+  next();
   },
   (req, res) => {
     res.render('adv/add', {
@@ -74,28 +75,90 @@ router.get('/add', (req, res, next) => {
   }
 )
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  console.log('Came to GET')
-  /*res.render('adv/item', {
-    title: 'Просмотр объявления',
-    user: req.user,
-    adv: Advertisement.find({_id: id})
-  })*/
+  try {
+    const adv = await Advertisement.findOne({ _id: id });
+    const users = await User.find({}, {name: 1});
+    console.log(adv);
+    
+    res.render('adv/moreinfo', {
+      title: adv.shortText,
+      adv: adv,
+      user: req.user,
+      users: users
+    })
+  } catch (e) {
+    console.log(`Ошибюка роута /: ${e}`);
+    res.redirect('/404');
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-  console.log('Came to DELETE')
-  /*if ((Advertisement.deleteOne({_id: id})).deletedCount === 1) {
-    req.session.sessMsg = {status: 'ok', message: 'Объявление успешно удалено'};
-    res.redirect('/api/advertisements');
-  } else {
-    req.session.sessMsg = {status: 'error', message: 'Не удалось удалить объявление'};
-    res.redirect('/api/advertisements');
-  }*/
-});
+router.delete('/:id', (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    req.session.sessMsg = {status: 'error', message: 'Вы не авторизованы'};
+    return res.redirect('/api/advertisements');
+  }
+  next();
+  },
+  (req, res) => {
+    const { id } = req.params;
 
+    if (req.user) {
+      const deleteRes = deleteAdv(id, req.user._id);
+  
+      if (deleteRes === 200) {
+        res.status = 200;
+        res.json({result: 'Ok'});
+      } else if (deleteRes === 403) {
+        res.status = 403;
+        res.json({error: 'Вы не являетесь автором объявления'});
+      } else {
+        res.status = 404;
+        res.json({error: 'Не удалось удалить'});
+      }
+    } else {
+      res.status = 401;
+      res.json({error: 'Вы не авторизованы'});
+    }
+  }
+);
 
+async function deleteFiles(id) {
+  const adv = await Advertisement.findById(id);
+  if (adv.images.length > 0) {
+    try {
+      adv.images.forEach(img => {
+        fs.unlink('/app/src/public/' + img, (err) => {
+          if (err) return false;
+        });
+      })
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+}
+/*
+function getFilesInDirectory() {
+  console.log("\nFiles present in directory:");
+  let files =       fs.readdirSync('/app/src/public/uploads/');
+  files.forEach(file => {
+      console.log(file);
+  });
+}
+*/
+async function deleteAdv(id, userId) {
+  const adv = await Advertisement.findById(id);
+  if (String(adv.userId) !== String(userId)) {
+    return 403;
+  }
+
+  if (deleteFiles(id)) {
+    const done = await Advertisement.deleteOne({ _id: id });
+    return 200;
+  }
+  return 404;
+}
 
 module.exports = router;
