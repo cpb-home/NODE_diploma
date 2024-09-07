@@ -3,7 +3,61 @@
 <div class="pageCont">
   <main class="main">
     <h1><%= title %></h1>
-    
+    <div class="moreinfo-cont">
+      <h2 class="item__header"><%= adv.shortText %></h2>
+      <div class="item__images-cont">
+        <% for (let i = 0; i < adv.images.length; i++) {
+        %>
+        <img src="<%= adv.images[i] %>" alt="Изображение <%= i+1 %>">
+        <% }
+        %>
+      </div>
+      <p class="item__desc"><%= adv.description %></p>
+      <div class="item__date">
+        Создано: 
+        <% 
+          const options = {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          timezone: 'UTC',
+          hour: 'numeric',
+          minute: 'numeric'
+        };
+        dateCreated = (new Date(adv.createdAt)).toLocaleDateString("ru", options);
+        %> <%= dateCreated %>
+      </div>
+
+      <div class="item__author"> 
+        <% const advUser = users.find(e => String(e._id) === String(adv.userId)) %>
+        <%= 'Автор: ' + advUser.name %>
+        <%- '<br>Изменено: ' + (new Date(adv.updatedAt)).toLocaleDateString("ru", options) %>
+        <%- adv.tags.length>0?'<br>Теги: ' + adv.tags.join(', '):'' %>
+      </div>
+      <% if (locals.user) { 
+          if (String(adv.userId) === String(user._id)) {
+      %>
+            <div class="item__editCont">
+              <button class="btnLink delBtn" data-id="<%= adv._id %>" type="button" title="Удалить объявление">Удалить</button>
+            </div>
+            <div class="delMessageCont"></div>
+      <%  }
+        }
+      %>
+    </div>
+    <div class="moreinfo-chatCont">
+      <h2>Обсуждение объявления</h2>
+      <div class="commnentsCont bordered">
+        <div class="chatCont">
+          Пока нет обсуждений
+        </div>
+        <div class="sendCont">
+          <input class="usernameInp" name="usernameInp" placeholder="Укажите ваше имя" required></input>
+          <textarea class="msgInp" name="msgInp" placeholder="Введите сообщение" required></textarea>
+          <button type="submit" class="msgSendBtn">Отправить</button>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 

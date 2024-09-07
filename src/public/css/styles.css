@@ -96,7 +96,10 @@ h4 {
     margin: 0 auto;
     min-height: 700px;}
 .main {
-    padding: 20px;}
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;}
 .item__cont {
     margin: 0 auto;
     border-radius: 10px;
@@ -190,6 +193,20 @@ h4 {
     text-align: center;
 }
 
+.moreinfo-cont, .moreinfo-chatCont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid var(--color-blueDark);
+    width: 80%;
+}
+
+.moreinfo-chatCont {
+    margin-top: 20px;
+    border: none;
+}
+
 .table {
     margin: 0 auto;
     width: 80%;
@@ -221,6 +238,7 @@ h4 {
 .addBtnCont {
     text-align: right;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .btnLink {

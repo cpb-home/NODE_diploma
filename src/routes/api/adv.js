@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
     for (let i = 0; i < req.files.length; i++) {
       fileNames.push('/uploads/' + req.files[i].filename);
     }
-    const tagsArr = tags.split(' ');
+    const tagsArr = tags !== '' ? tags.split(' ') : [];
     const newTags = [];
     for (let i = 0; i < tagsArr.length; i++) {
       newTags.push(tagsArr[i]);
@@ -80,7 +80,6 @@ router.get('/:id', async (req, res) => {
   try {
     const adv = await Advertisement.findOne({ _id: id });
     const users = await User.find({}, {name: 1});
-    console.log(adv);
     
     res.render('adv/moreinfo', {
       title: adv.shortText,
