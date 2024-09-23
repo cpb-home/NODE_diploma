@@ -1,4 +1,4 @@
-<%- include('../page/page_header.ejs', {title: title, adv: adv, users: users}) %>
+<%- include('../page/page_header.ejs', {title: title, adv: adv, users: users, messages: messages, user: user}) %>
 
 <div class="pageCont">
   <main class="main">
@@ -29,7 +29,7 @@
       </div>
 
       <div class="item__author"> 
-        <% const advUser = users.find(e => String(e._id) === String(adv.userId)) %>
+        <% const advUser = users.find(e => (e._id).toString() == (adv.userId).toString()) %>
         <%= 'Автор: ' + advUser.name %>
         <%- '<br>Изменено: ' + (new Date(adv.updatedAt)).toLocaleDateString("ru", options) %>
         <%- adv.tags.length>0?'<br>Теги: ' + adv.tags.join(', '):'' %>
@@ -45,19 +45,28 @@
         }
       %>
     </div>
-    <div class="moreinfo-chatCont">
-      <h2>Обсуждение объявления</h2>
-      <div class="commnentsCont bordered">
-        <div class="chatCont">
-          Пока нет обсуждений
-        </div>
-        <div class="sendCont">
-          <input class="usernameInp" name="usernameInp" placeholder="Укажите ваше имя" required></input>
-          <textarea class="msgInp" name="msgInp" placeholder="Введите сообщение" required></textarea>
-          <button type="submit" class="msgSendBtn">Отправить</button>
+    <% if (Object.keys(user).length > 0) { 
+    %>
+      <div class="moreinfo-chatCont">
+        <h2>История переписки с автором</h2>
+        <div class="commentsCont bordered">
+          <div class="chatCont">
+            <% if (messages.length > 0) { 
+              for (let i = messages.length - 1; i >= 0; i--) {
+            %>
+              <%- include('./message.ejs', {advUser: advUser, message: messages[i], users: users, user: user}); %>
+            <% } } else { %>
+              Пока не было сообщений<br>
+            <%  } %>
+          </div>
+          <div class="sendCont">
+            <textarea class="usernameInp" name="usernameInp" placeholder="Введите текст" required></textarea>
+            <button type="submit" class="btn msgSendBtn ">Отправить</button>
+          </div>
         </div>
       </div>
-    </div>
+    <%  }
+    %>
   </main>
 </div>
 

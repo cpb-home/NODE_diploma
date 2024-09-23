@@ -1,0 +1,25 @@
+<div class="msgCont">
+  <div class="msgText<%= ((user._id).toString() == (message.author).toString()) ? ' msgTextMy' : '' %>">
+    <%= message.text; %>
+  </div>
+  <div class="msgAuth">
+    <% 
+      const options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric'
+      };
+
+      if ((advUser._id).toString() == (message.author).toString()) {
+    %>
+      <%=  advUser.name %>. <%= (new Date(message.sentAt)).toLocaleDateString("ru", options); %>
+    <% } else { 
+      const messUser = users.find(e => (e._id).toString() === (message.author).toString());
+    %>
+      <%=  messUser.name %>. <%= (new Date(message.sentAt)).toLocaleDateString("ru", options); %>
+    <% } %>
+  </div>
+</div>

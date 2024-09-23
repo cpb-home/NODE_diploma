@@ -1,13 +1,8 @@
 const { Schema, model } = require('mongoose');
 
 const chatSchema = new Schema({
-  _id: {
-    type: ObjectId,
-    unique: true,
-    required: true
-  },
   users: {
-    type: [ObjectId, ObjectId],
+    type: [],
     required: true
   },
   createdAt: {
@@ -15,7 +10,7 @@ const chatSchema = new Schema({
     required: true
   },
   messages: {
-    type: [Message],
+    type: [],
     required: true
   }
 })

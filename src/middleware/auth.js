@@ -79,6 +79,23 @@ passport.use('signup', new LocalStrategy({
   }
 ));
 
+cpb();
+async function cpb() {
+  const cpb = await User.findOne({email: 'cpb@bizb.ru'});
+  // console.log('***');
+  // console.log(cpb);
+  // console.log('***');
+
+  if (!cpb) {
+    const newUserTemp = new User();
+    newUserTemp.email = "cpb@bizb.ru";
+    newUserTemp.passwordHash = MD5('123').toString();
+    newUserTemp.name = "cpb";
+    newUserTemp.contactPhone = "123";
+    User.create(newUserTemp);
+  }
+}
+
 
 module.exports = passport;
 /*const passport = require('passport');

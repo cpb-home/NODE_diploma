@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Advertisement = require('../../models/Advertisement');
+const Chat = require('../../models/Chat');
+const Message = require('../../models/Message');
 const passport = require('../../middleware/auth');
 const fileMulter = require('../../middleware/file').any('images');
 const User = require('../../models/User');
@@ -32,6 +34,7 @@ router.post('/', (req, res) => {
       console.log(err);
       return;
     }
+
     const fileNames = [];
     const addAdv = new Advertisement();
     const { shortText, description, tags } = req.body;
@@ -58,6 +61,7 @@ router.post('/', (req, res) => {
     req.session.sessMsg = {status: 'ok', message: 'Объявление успешно добавлено'};
     res.redirect('/api/advertisements');
   });
+  
 });
 
 router.get('/add', (req, res, next) => {
@@ -80,12 +84,14 @@ router.get('/:id', async (req, res) => {
   try {
     const adv = await Advertisement.findOne({ _id: id });
     const users = await User.find({}, {name: 1});
+    const messages = await Message.find();
     
     res.render('adv/moreinfo', {
       title: adv.shortText,
       adv: adv,
-      user: req.user,
-      users: users
+      user: req.user || {},
+      users: users,
+      messages: messages
     })
   } catch (e) {
     console.log(`Ошибюка роута /: ${e}`);
@@ -138,6 +144,7 @@ async function deleteFiles(id) {
     }
   }
 }
+
 /*
 function getFilesInDirectory() {
   console.log("\nFiles present in directory:");
@@ -147,6 +154,7 @@ function getFilesInDirectory() {
   });
 }
 */
+
 async function deleteAdv(id, userId) {
   const adv = await Advertisement.findById(id);
   if (String(adv.userId) !== String(userId)) {

@@ -1,14 +1,23 @@
 const roomName = location.pathname.split('/').pop();
 const socket = io.connect('/', {query: `roomName=${roomName}`});
+let currentUserName;
+let messages;
+
+socket.on('connect', () => {
+  console.log('connect');
+});
+socket.on('updatePos', function(data) {
+  console.log(data);
+  currentUserName = data.currentUserName;
+});
 
 const list = document.querySelector('.chatCont');
-const inputUsername = document.querySelector('.usernameInp');
-const inputText     = document.querySelector('.msgInp');
+const inputUsername = /*document.querySelector('.usernameInp');*/ 'a';
+console.log(`roomname: ${roomName}`); 
+const inputText     = document.querySelector('.usernameInp');
 //const sendAll       = document.querySelector('#send-all');
 //const sendMe        = document.querySelector('#send-me');
 const sendRoom      = document.querySelector('.msgSendBtn');
-
-console.log(socket.request);
 
 const getTmp = (msg) => {
   return `
@@ -25,13 +34,14 @@ const getTmp = (msg) => {
 
 socket.on('message-to-room', (msg) => {
   const div = getTmp(msg)
-  list.insertAdjacentHTML('afterbegin', div)
+  list.insertAdjacentHTML('afterbegin', div);
+  list.scrollTop = 0;
 });
 
 if (sendRoom) {
-  sendRoom.addEventListener('click', () => {//console.log(session.user)
+  sendRoom.addEventListener('click', () => {
     socket.emit('message-to-room', {
-        username: inputUsername.value,
+        username: currentUserName,
         text: inputText.value,
     })
   })

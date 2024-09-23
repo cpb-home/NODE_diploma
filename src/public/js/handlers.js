@@ -1,4 +1,5 @@
 btnHandler();
+//sendMessage();
 
 function btnHandler() {
   const delBtn = document.querySelectorAll('.delBtn');
@@ -43,4 +44,25 @@ async function dataTransmitHandler(id) {
   })
 
   return success;
+}
+
+
+
+function sendMessage() {
+  const sendCont = document.querySelector('.sendCont');
+
+  if (sendCont) {
+    sendCont.addEventListener('submit', e => {console.log(1);
+      e.preventDefault();
+
+      const usernameInp = sendCont.querySelector('.usernameInp');
+
+
+      usernameInp.textContent = '';
+    })
+  }
+}
+
+async function fetchSendMessage() {
+
 }

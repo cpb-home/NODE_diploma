@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const socketIO = require('socket.io');
 const passport = require('./src/middleware/auth');
+const socketFunc = require('./src/middleware/socketIO');
 
 const HTTP_PORT = process.env.HTTP_PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://root:example@mongo:27017/';
@@ -49,28 +50,17 @@ io.engine.use(
     }
   })
 );
-
-io.on("connection", (socket) => {
-  const userId = socket.request.user.id;
-  const user = socket.request.user;
-
-  const { roomName } = socket.handshake.query;
-  //socket.join(`user:${userId}`);
-  console.log('user: ' + user);
-  console.log('roomName: ' + roomName);
-  socket.join(roomName);
-
-  socket.on('message-to-me', (msg) => {
-    msg.type = 'me';
-    socket.emit('message-to-me', msg);
-  })
-
-  socket.on('message-to-room', (msg) => {
-    msg.type = `roomName: ${roomName}`;
-    socket.to(roomName).emit('message-to-room', msg);
-    socket.emit('message-to-room', msg);
-  })
-})
+/*
+const entityBag = [];
+const obj1 = {'as': 'as'};
+const obj2 = {'ascfas': 'aasdcss'};
+const addEntity = function(ent) {
+  entityBag.push(ent);
+}; 
+addEntity(obj1);
+addEntity(obj2);
+*/
+io.on("connection", socketFunc)
 
 function onlyForHandshake(middleware) {
   return (req, res, next) => {
