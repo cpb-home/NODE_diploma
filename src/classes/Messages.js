@@ -7,7 +7,7 @@ class Messages {
   }
 
   static async getOneMessage(id) {
-    const message = await Message.findOne({_id: id}); console.log(message);
+    const message = await Message.findOne({_id: id});
     return message;
   }
 

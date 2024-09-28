@@ -6,6 +6,19 @@ class Chats {
     return chats;
   }
 
+  static async getUserChat(advUser, currentUser) {
+    const chat = await Chat.find({users: currentUser.toString() });
+    if (chat.length > 0) {
+      const messages = [];
+      for (let i = 0; i < chat.length; i++) {
+        messages.push(...chat[i].messages);
+      }
+      console.log(`msgs: ${messages}`);
+      return messages;
+    }
+    return [];
+  }
+/*
   static async getUserChat(advUser, currentUser) { console.log(`advUser: ${advUser}`, `currentUser ${currentUser}`);
     const chat = await Chat.findOne({users: {$all: [advUser.toString(), currentUser.toString()] } });
     if (chat) {
@@ -14,6 +27,7 @@ class Chats {
     }
     return [];
   }
+*/
 
   static async getOneChat(owner, currentUser) {
 
