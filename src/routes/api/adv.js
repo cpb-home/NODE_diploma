@@ -7,6 +7,8 @@ const passport = require('../../middleware/auth');
 const fileMulter = require('../../middleware/file').any('images');
 const User = require('../../models/User');
 const fs = require('fs');
+const Chats = require('../../classes/Chats');
+const Messages = require('../../classes/Messages');
 
 router.get('/', async (req, res) => {
   try {
@@ -84,7 +86,8 @@ router.get('/:id', async (req, res) => {
   try {
     const adv = await Advertisement.findOne({ _id: id });
     const users = await User.find({}, {name: 1});
-    const messages = await Message.find();
+    
+    const messages = await getUsersMessages(adv, req.user);
     
     res.render('adv/moreinfo', {
       title: adv.shortText,
@@ -166,6 +169,22 @@ async function deleteAdv(id, userId) {
     return 200;
   }
   return 404;
+}
+
+async function getUsersMessages(adv, currentUser) {
+  if (adv && currentUser) {
+    const chatList = await Chats.getUserChat(adv.userId, currentUser._id);
+    if (chatList && chatList.length > 0) { 
+      const messages = [];
+      for (let i = 0; i < chatList.length; i++) {
+        const message = await Messages.getOneMessage(chatList[i]);
+        messages.push(message);
+      }
+      return messages;
+    }
+    return [];
+  }
+  return [];
 }
 
 module.exports = router;

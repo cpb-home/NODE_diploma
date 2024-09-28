@@ -1,6 +1,7 @@
 const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const Messages = require('../classes/Messages');
+const Chats = require('../classes/Chats');
 
 const socketFunc = async (socket) => {
   const userId = socket.request.user.id;
@@ -16,7 +17,7 @@ const socketFunc = async (socket) => {
     chat.messages.forEach(msg => getMessage(msg))
   })*/
   
-  socket.emit('updatePos', {currentUserName: user.name, messages: chats});
+  socket.emit('updatePos', {currentUser: user, messages: chats});
 
   const { roomName } = socket.handshake.query;
   //socket.join(`user:${userId}`);
@@ -29,8 +30,9 @@ const socketFunc = async (socket) => {
     socket.emit('message-to-me', msg);
   })
 
-  socket.on('message-to-room', (msg) => {
-    Messages.addMessage(userId, msg.text);
+  socket.on('message-to-room', async (msg) => {
+    const addedMsg = await Messages.addMessage(userId, msg.text);
+    Chats.addMessage(msg.msgAuthorId, userId, addedMsg._id);
     msg.type = `roomName: ${roomName}`;
     socket.to(roomName).emit('message-to-room', msg);
     socket.emit('message-to-room', msg);

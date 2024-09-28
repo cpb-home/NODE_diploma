@@ -28,7 +28,7 @@
         %> <%= dateCreated %>
       </div>
 
-      <div class="item__author"> 
+      <div class="item__author" data-autorid="<%= adv.userId %>"> 
         <% const advUser = users.find(e => (e._id).toString() == (adv.userId).toString()) %>
         <%= 'Автор: ' + advUser.name %>
         <%- '<br>Изменено: ' + (new Date(adv.updatedAt)).toLocaleDateString("ru", options) %>
@@ -48,7 +48,7 @@
     <% if (Object.keys(user).length > 0) { 
     %>
       <div class="moreinfo-chatCont">
-        <h2>История переписки с автором</h2>
+        <h2>История переписки</h2>
         <div class="commentsCont bordered">
           <div class="chatCont">
             <% if (messages.length > 0) { 

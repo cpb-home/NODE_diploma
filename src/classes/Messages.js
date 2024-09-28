@@ -6,8 +6,9 @@ class Messages {
     return messages;
   }
 
-  static async getOneMessage() {
-
+  static async getOneMessage(id) {
+    const message = await Message.findOne({_id: id}); console.log(message);
+    return message;
   }
 
   static async addMessage(author, text) {
@@ -17,7 +18,8 @@ class Messages {
     mess.text = text;
     mess.readAt = new Date();
     const addedMessage = await Message.create(mess);
-    console.log(addedMessage);
+    return addedMessage;
+    //console.log(addedMessage);
   }
 }
 
