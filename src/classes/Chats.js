@@ -13,7 +13,7 @@ class Chats {
       for (let i = 0; i < chat.length; i++) {
         messages.push(...chat[i].messages);
       }
-      console.log(`msgs: ${messages}`);
+      //console.log(`msgs: ${messages}`);
       return messages;
     }
     return [];
@@ -46,7 +46,7 @@ class Chats {
           }
         }
       );
-      console.log(updatedChat);
+      //console.log(updatedChat);
     } else {
       await Chats.addChat(owner, currentUser, message);
     }
